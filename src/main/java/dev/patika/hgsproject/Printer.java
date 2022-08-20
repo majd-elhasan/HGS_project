@@ -16,9 +16,9 @@ public class Printer {
         double todayIncome=0;
         for(Record record : records)
         {
-            if(record.date.getYear()== LocalDate.now().getYear() &&
-                    record.date.getDayOfYear() == LocalDate.now().getDayOfYear() )
-                todayIncome += record.income;
+            if(record.getDate().getYear()== LocalDate.now().getYear() &&
+                    record.getDate().getDayOfYear() == LocalDate.now().getDayOfYear() )
+                todayIncome += record.getIncome();
         }
         System.out.println(todayIncome);
         System.out.println(LocalDate.now());

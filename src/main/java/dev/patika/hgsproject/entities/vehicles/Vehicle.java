@@ -1,32 +1,29 @@
 package dev.patika.hgsproject.entities.vehicles;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Setter
+@Getter
 public abstract class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public Long id;
+    private Long id;
 
     // 10 digits
     @Column(name = "hgs_number")
-    public long HGSnumber;
-    String fullName;
-    VehicleClass vehicleClass;
-    public double balance;
+    private long HGSnumber;
+    private String driverFullName;
+    private VehicleClass vehicleClass;
+    private double balance;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    Vehicle(long hgs_number, String fullName, VehicleClass vehicleClass){
+    Vehicle(long hgs_number, String driverFullName, VehicleClass vehicleClass){
         this.HGSnumber =hgs_number;
-        this.fullName = fullName;
+        this.driverFullName = driverFullName;
         this.vehicleClass = vehicleClass;
     }
 
@@ -38,7 +35,7 @@ public abstract class Vehicle {
     public String toString() {
         return "Vehicle{" +
                 "HGS_number=" + HGSnumber +
-                ", fullName='" + fullName + '\'' +
+                ", fullName='" + driverFullName + '\'' +
                 ", vehicleClass=" + vehicleClass +
                 ", balance=" + balance +
                 '}';

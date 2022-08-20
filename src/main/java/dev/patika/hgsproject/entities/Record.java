@@ -1,22 +1,26 @@
 package dev.patika.hgsproject.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.*;
+import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
+@Getter
+@Setter
 @Entity
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore
-    public Counter counter;
-    public LocalDateTime date;
-    public double income;
+    private Counter counter;
+    private LocalDateTime date;
+    private double income;
     @Column(name = "hgs_number")
-    public long vehicleHGS;
+    private long vehicleHGS;
 
     public Record(LocalDateTime date, double income,Long vehicle_HGS,Counter counter) {
         this.date = date;
@@ -28,7 +32,6 @@ public class Record {
     public Record() {
 
     }
-
     @Override
     public String toString() {
         return
@@ -36,5 +39,18 @@ public class Record {
                 " " +date.toLocalTime() +
                 " __ HGS ID number=" + vehicleHGS +
                 " __ income=" + income;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Record record = (Record) o;
+        return id != null && Objects.equals(id, record.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

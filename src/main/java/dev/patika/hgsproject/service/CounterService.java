@@ -23,6 +23,10 @@ public class CounterService {
     }
     public List<Counter> getAllCounters(){
         return this.counterRepository.findAll();
+
+    }
+    public Counter findById(long id){
+        return counterRepository.findById(id).get();
     }
     public Counter setCounter(Counter counter){
        return counterRepository.save(counter);
@@ -34,15 +38,18 @@ public class CounterService {
     public void payForToll(Counter counter, Vehicle vehicle){
         double fee =0;
         if (vehicle instanceof Car){
-            vehicle.balance -= fee = counter.getCAR_PAYMENT();
+            fee = counter.getCAR_PAYMENT();
+            vehicle.setBalance(vehicle.getBalance()-fee);
         }
         if (vehicle instanceof Minibus){
-            vehicle.balance -= fee = counter.getMINIBUS_PAYMENT();
+            fee = counter.getMINIBUS_PAYMENT();
+            vehicle.setBalance(vehicle.getBalance()-fee);
         }
         if (vehicle instanceof Bus){
-            vehicle.balance -= fee = counter.getBUS_PAYMENT();
+            fee = counter.getBUS_PAYMENT();
+            vehicle.setBalance(vehicle.getBalance()-fee);
         }
-        Record record = new Record(LocalDateTime.now(),fee,vehicle.HGSnumber,counter);
+        Record record = new Record(LocalDateTime.now(),fee,vehicle.getHGSnumber(),counter);
         recordRepository.save(record);
         counter.getRecords().add(record);
     }

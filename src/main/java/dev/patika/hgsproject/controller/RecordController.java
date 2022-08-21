@@ -28,20 +28,20 @@ public class RecordController {
     public ResponseEntity<List<RecordDTO>> getToday_s_Records(){
         return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecords()));
     }
-    @GetMapping("/lane_id/{lane_id}")
+    @GetMapping("/tollBooth_id/{tollBooth_id}")
     @Transactional
-    public ResponseEntity getAllRecordsRelatedTo_ThisLane(@PathVariable long lane_id){
+    public ResponseEntity getAllRecordsRelatedTo_ThisTollBooth(@PathVariable long tollBooth_id){
         try {
-            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByLaneId(lane_id)));
+            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByTollBoothId(tollBooth_id)));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    @GetMapping("/lane_id/{lane_id}/today")
+    @GetMapping("/tollBooth_id/{tollBooth_id}/today")
     @Transactional
-    public ResponseEntity getToday_s_RecordsRelatedTo_ThisLane(@PathVariable long lane_id){
+    public ResponseEntity getToday_s_RecordsRelatedTo_ThisTollBooth(@PathVariable long tollBooth_id){
         try {
-            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByLaneId(lane_id)));
+            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByTollBoothId(tollBooth_id)));
         }catch (Exception e){
           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -57,11 +57,11 @@ public class RecordController {
         }
         return ResponseEntity.ok(String.valueOf(todayIncome));
     }
-    @GetMapping("/lane_id/{lane_id}/today's_income")
-    public ResponseEntity<String> getToday_s_income_RelatedTo_ThisLane(@PathVariable long lane_id){
+    @GetMapping("/tollBooth_id/{tollBooth_id}/today's_income")
+    public ResponseEntity<String> getToday_s_income_RelatedTo_ThisTollBooth(@PathVariable long tollBooth_id){
         try {
             double todayIncome=0;
-            for(Record record : this.service.getAllRecordsByLaneId(lane_id)){
+            for(Record record : this.service.getAllRecordsByTollBoothId(tollBooth_id)){
                 if(record.getDate().getYear()== LocalDate.now().getYear() &&
                         record.getDate().getDayOfYear() == LocalDate.now().getDayOfYear() ) {
                     todayIncome += record.getIncome();
@@ -85,7 +85,7 @@ public class RecordController {
                 new_record.setId(record.getId());
                 new_record.setDate(record.getDate());
                 new_record.setIncome(record.getIncome());
-                new_record.setCounter_id(record.getLane().getId());
+                new_record.setTollBooth_id(record.getTollBooth().getId());
                 new_record.setVehicleHGS(record.getVehicleHGS());
                 recordDTOS.add(new_record);
             }

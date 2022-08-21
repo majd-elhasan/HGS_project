@@ -1,11 +1,11 @@
 package dev.patika.hgsproject.util;
 
 import dev.patika.hgsproject.Printer;
-import dev.patika.hgsproject.entities.Lane;
+import dev.patika.hgsproject.entities.TollBooth;
 import dev.patika.hgsproject.repository.*;
 import dev.patika.hgsproject.entities.vehicles.*;
 import dev.patika.hgsproject.repository.VehicleRepository;
-import dev.patika.hgsproject.service.LaneService;
+import dev.patika.hgsproject.service.TollBoothService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class initializerRunner implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(initializerRunner.class);
-    private final LaneRepository laneRepository;
+    private final TollBoothRepository laneRepository;
     private final RecordRepository recordRepository;
     private final VehicleRepository vehicleRepository;
-    private final LaneService laneService;
+    private final TollBoothService laneService;
 
-    public initializerRunner(LaneRepository laneRepository, RecordRepository recordRepository, VehicleRepository vehicleRepository, LaneService laneService) {
+    public initializerRunner(TollBoothRepository laneRepository, RecordRepository recordRepository, VehicleRepository vehicleRepository, TollBoothService laneService) {
         this.laneRepository = laneRepository;
         this.recordRepository = recordRepository;
         this.vehicleRepository = vehicleRepository;
@@ -28,7 +28,7 @@ public class initializerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /*
+/*
         if(laneRepository.findAll().isEmpty()){
 
             Vehicle bus1 = new Bus(5487965231L,"Mecid elhasan");
@@ -40,7 +40,7 @@ public class initializerRunner implements CommandLineRunner {
             Vehicle minibus2 = new Minibus(9856325623L,"alp arslan");
 
 
-            Lane lane = new Lane("Osmangazi Köprüsü");
+            TollBooth lane = new TollBooth("Osmangazi Köprüsü");
             laneRepository.save(lane);
             laneService.payForToll(lane,bus1);
             laneService.payForToll(lane,car1);

@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-public class Lane {  // in turkish : 'Gişe'
+public class TollBooth {  // in turkish : 'Gişe'
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,14 +17,14 @@ public class Lane {  // in turkish : 'Gişe'
     private double CAR_PAYMENT = 184.5;
     private double MINIBUS_PAYMENT = 295;
     private double BUS_PAYMENT = 350;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "lane")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "tollBooth")
     private List<Record> records = new ArrayList<>();
 
-    public Lane(String address) {
+    public TollBooth(String address) {
         this.address = address;
     }
 
-    public Lane() {}
+    public TollBooth() {}
 
     @Override
     public String toString() {

@@ -1,9 +1,9 @@
 package dev.patika.hgsproject.controller;
 
-import dev.patika.hgsproject.entities.Lane;
+import dev.patika.hgsproject.entities.TollBooth;
 import dev.patika.hgsproject.exception.AlreadyExistException;
 import dev.patika.hgsproject.exception.NotFoundException;
-import dev.patika.hgsproject.service.LaneService;
+import dev.patika.hgsproject.service.TollBoothService;
 import dev.patika.hgsproject.service.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/counters")
-public class LaneController {
-    private final LaneService laneService;
+@RequestMapping("/tollBooths")
+public class TollBoothController {
+    private final TollBoothService tollBoothService;
     private final VehicleService vehicleService;
 
-    public LaneController(LaneService laneService, VehicleService vehicleService) {
-        this.laneService = laneService;
+    public TollBoothController(TollBoothService tollBoothService, VehicleService vehicleService) {
+        this.tollBoothService = tollBoothService;
         this.vehicleService = vehicleService;
     }
     @GetMapping
     @Transactional(readOnly = true)
-    public ResponseEntity<List<Lane>> getAllCounters(){
-        return ResponseEntity.ok(this.laneService.getAllCounters());
+    public ResponseEntity<List<TollBooth>> getAllCounters(){
+        return ResponseEntity.ok(this.tollBoothService.getAllCounters());
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity saveLane(@RequestBody Lane lane){
+    public ResponseEntity saveTollBooth(@RequestBody TollBooth tollBooth){
         try {
-            return ResponseEntity.ok(laneService.setLane(lane));
+            return ResponseEntity.ok(tollBoothService.setTollBooth(tollBooth));
         }catch (Exception e){
             return (e instanceof AlreadyExistException)? ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage())
                     :(e instanceof NotFoundException)? ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage())
@@ -41,21 +41,21 @@ public class LaneController {
 
     }
     @DeleteMapping
-    public ResponseEntity<String> deleteLane(@RequestBody Lane lane){
+    public ResponseEntity<String> deleteTollBooth(@RequestBody TollBooth tollBooth){
         try {
-            this.laneService.deleteLane(lane);
+            this.tollBoothService.deleteTollBooth(tollBooth);
             return ResponseEntity.ok("the counter has been deleted successfully.");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
     }
-    @PostMapping("getPayment/{counter_id}/{HGS_num}")
+    @PostMapping("getPayment/{tollbooth_id}/{HGS_num}")
     @Transactional
-    public ResponseEntity<String> getPayment(@PathVariable long counter_id, @PathVariable long HGS_num){
+    public ResponseEntity<String> getPayment(@PathVariable long tollbooth_id, @PathVariable long HGS_num){
         try {
-            this.laneService.payForToll(
-                    laneService.findById(counter_id),vehicleService.getVehicleByHGS_number(HGS_num));
+            this.tollBoothService.payForToll(
+                    tollBoothService.findById(tollbooth_id),vehicleService.getVehicleByHGS_number(HGS_num));
             return ResponseEntity.ok("the payment has been received successfully");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RecordDTO {
     private long id;
-    private long counter_id;
+    private long tollBooth_id;
     private LocalDateTime date;
     private double income;
     private long vehicleHGS;

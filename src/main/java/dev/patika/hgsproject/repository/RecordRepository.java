@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RecordRepository extends JpaRepository<Record,Long> {
     List<Record> findAllByVehicleHGS(long HGS_number);
-    List<Record> findAllByLaneId(long id);
+    List<Record> findAllByTollBoothId(long id);
 }

@@ -1,11 +1,11 @@
 package dev.patika.hgsproject.util;
 
 import dev.patika.hgsproject.Printer;
-import dev.patika.hgsproject.entities.Counter;
+import dev.patika.hgsproject.entities.Lane;
 import dev.patika.hgsproject.repository.*;
 import dev.patika.hgsproject.entities.vehicles.*;
 import dev.patika.hgsproject.repository.VehicleRepository;
-import dev.patika.hgsproject.service.CounterService;
+import dev.patika.hgsproject.service.LaneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,21 +14,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class initializerRunner implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(initializerRunner.class);
-    private final CounterRepository counterRepository;
+    private final LaneRepository laneRepository;
     private final RecordRepository recordRepository;
     private final VehicleRepository vehicleRepository;
-    private final CounterService counterService;
+    private final LaneService laneService;
 
-    public initializerRunner( CounterRepository counterRepository, RecordRepository recordRepository, VehicleRepository vehicleRepository, CounterService counterService) {
-        this.counterRepository = counterRepository;
+    public initializerRunner(LaneRepository laneRepository, RecordRepository recordRepository, VehicleRepository vehicleRepository, LaneService laneService) {
+        this.laneRepository = laneRepository;
         this.recordRepository = recordRepository;
         this.vehicleRepository = vehicleRepository;
-        this.counterService = counterService;
+        this.laneService = laneService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        if(counterRepository.findAll().isEmpty()){
+        /*
+        if(laneRepository.findAll().isEmpty()){
 
             Vehicle bus1 = new Bus(5487965231L,"Mecid elhasan");
             Vehicle car1 = new Car(9865329751L,"Esra yıldız");
@@ -39,18 +40,18 @@ public class initializerRunner implements CommandLineRunner {
             Vehicle minibus2 = new Minibus(9856325623L,"alp arslan");
 
 
-            Counter counter = new Counter("Osmangazi Köprüsü");
-            counterRepository.save(counter);
-            counterService.payForToll(counter,bus1);
-            counterService.payForToll(counter,car1);
-            counterService.payForToll(counter,car2);
-            counterService.payForToll(counter,minibus1);
-            counterService.payForToll(counter,car3);
-            counterService.payForToll(counter,minibus2);
-            counterService.payForToll(counter,car1);
-            counterService.payForToll(counter,bus1);
-            counterService.payForToll(counter,car4);
-            counterService.payForToll(counter,minibus1);
+            Lane lane = new Lane("Osmangazi Köprüsü");
+            laneRepository.save(lane);
+            laneService.payForToll(lane,bus1);
+            laneService.payForToll(lane,car1);
+            laneService.payForToll(lane,car2);
+            laneService.payForToll(lane,minibus1);
+            laneService.payForToll(lane,car3);
+            laneService.payForToll(lane,minibus2);
+            laneService.payForToll(lane,car1);
+            laneService.payForToll(lane,bus1);
+            laneService.payForToll(lane,car4);
+            laneService.payForToll(lane,minibus1);
 
             vehicleRepository.save(bus1);
             vehicleRepository.save(car1);
@@ -60,10 +61,10 @@ public class initializerRunner implements CommandLineRunner {
             vehicleRepository.save(minibus1);
             vehicleRepository.save(minibus2);
 
-            Printer.printTodayBalance(counter.getRecords());
+            Printer.printTodayBalance(lane.getRecords());
         }
-        counterRepository.findAll().forEach(counter -> logger.info("{}", counter));
+        laneRepository.findAll().forEach(lane -> logger.info("{}", lane));
         recordRepository.findAll().forEach(record -> logger.info("{}", record));
-
+    */
     }
 }

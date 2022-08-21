@@ -16,17 +16,17 @@ public class Record {
 
     @ManyToOne
     @JsonIgnore
-    private Counter counter;
+    private Lane lane;
     private LocalDateTime date;
     private double income;
     @Column(name = "hgs_number")
     private long vehicleHGS;
 
-    public Record(LocalDateTime date, double income,Long vehicle_HGS,Counter counter) {
+    public Record(LocalDateTime date, double income, Long vehicle_HGS, Lane lane) {
         this.date = date;
         this.income = income;
         this.vehicleHGS = vehicle_HGS;
-        this.counter = counter;
+        this.lane = lane;
     }
 
     public Record() {

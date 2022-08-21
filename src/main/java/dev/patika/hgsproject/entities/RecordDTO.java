@@ -1,13 +1,13 @@
 package dev.patika.hgsproject.entities;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RecordDTO {
     private long id;
     private long counter_id;

@@ -3,10 +3,12 @@ package dev.patika.hgsproject.controller;
 import dev.patika.hgsproject.entities.Record;
 import dev.patika.hgsproject.entities.RecordDTO;
 import dev.patika.hgsproject.service.RecordService;
-import lombok.Builder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +20,76 @@ public class RecordController {
     public RecordController(RecordService service) {
         this.service = service;
     }
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<RecordDTO>> getAllRecords(){
-        List<RecordDTO> records = new ArrayList<>();
-        for(Record record : this.service.getAllRecords()){
-            records.add(RecordDTO.builder()
-                    .id(record.getId())
-                    .counter_id(record.getCounter().getId())
-                    .date(record.getDate())
-                    .income(record.getIncome())
-                    .vehicleHGS(record.getVehicleHGS())
-                    .build());
-        }
-        return ResponseEntity.ok(records);
+        return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecords()));
     }
-    @GetMapping("/{HGS_Number}")
-    public ResponseEntity<Record> getRecordByHGS_number(@PathVariable long HGS_Number){
-        return ResponseEntity.ok(this.service.getRecordByHGS_Number(HGS_Number));
+    @GetMapping("today")
+    public ResponseEntity<List<RecordDTO>> getToday_s_Records(){
+        return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecords()));
+    }
+    @GetMapping("/lane_id/{lane_id}")
+    @Transactional
+    public ResponseEntity getAllRecordsRelatedTo_ThisLane(@PathVariable long lane_id){
+        try {
+            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByLaneId(lane_id)));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @GetMapping("/lane_id/{lane_id}/today")
+    @Transactional
+    public ResponseEntity getToday_s_RecordsRelatedTo_ThisLane(@PathVariable long lane_id){
+        try {
+            return ResponseEntity.ok(convertToday_s_RecordsToDTO(this.service.getAllRecordsByLaneId(lane_id)));
+        }catch (Exception e){
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @GetMapping("today's_income")
+    public ResponseEntity<String> getToday_s_income(){
+        double todayIncome=0;
+        for(Record record : this.service.getAllRecords()){
+            if(record.getDate().getYear()== LocalDate.now().getYear() &&
+                    record.getDate().getDayOfYear() == LocalDate.now().getDayOfYear() ) {
+                todayIncome += record.getIncome();
+            }
+        }
+        return ResponseEntity.ok(String.valueOf(todayIncome));
+    }
+    @GetMapping("/lane_id/{lane_id}/today's_income")
+    public ResponseEntity<String> getToday_s_income_RelatedTo_ThisLane(@PathVariable long lane_id){
+        try {
+            double todayIncome=0;
+            for(Record record : this.service.getAllRecordsByLaneId(lane_id)){
+                if(record.getDate().getYear()== LocalDate.now().getYear() &&
+                        record.getDate().getDayOfYear() == LocalDate.now().getDayOfYear() ) {
+                    todayIncome += record.getIncome();
+                }
+            }
+            return ResponseEntity.ok(String.valueOf(todayIncome));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @GetMapping("/vehicle_HGS/{HGS_Number}")
+    public ResponseEntity<List<Record>> getRecordsByHGS_number(@PathVariable long HGS_Number){
+        return ResponseEntity.ok(this.service.getRecordsByHGS_Number(HGS_Number));
+    }
+    private List<RecordDTO> convertToday_s_RecordsToDTO(List<Record> records){
+        List<RecordDTO> recordDTOS = new ArrayList<>();
+        for(Record record : records){
+            if(record.getDate().getYear()== LocalDate.now().getYear() &&
+                    record.getDate().getDayOfYear() == LocalDate.now().getDayOfYear() ) {
+                RecordDTO new_record = new RecordDTO();
+                new_record.setId(record.getId());
+                new_record.setDate(record.getDate());
+                new_record.setIncome(record.getIncome());
+                new_record.setCounter_id(record.getLane().getId());
+                new_record.setVehicleHGS(record.getVehicleHGS());
+                recordDTOS.add(new_record);
+            }
+        }
+        return recordDTOS;
     }
 }

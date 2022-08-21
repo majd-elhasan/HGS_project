@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Printer {
     public static void printTodayBalance(List<Record> records){
+
         System.out.println("-----------------------");
         for(Record record : records){
             System.out.println(record);
@@ -22,6 +23,5 @@ public class Printer {
         }
         System.out.println(todayIncome);
         System.out.println(LocalDate.now());
-
     }
 }
